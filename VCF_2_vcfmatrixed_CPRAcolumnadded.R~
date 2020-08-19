@@ -1,0 +1,69 @@
+#################
+## This script receives a VCF and retrieves a matrix derived VCF with a CPRA column added at the end
+## The first argument should be the VCF, the second argument the result directory
+################
+###################################
+#### 0) loading and/or installing required libraries
+###################################
+if (!require("BiocManager")) {
+  install.packages("BiocManager", ask =FALSE)
+  library("BiocManager")
+}
+if (!require("ggplot2")) {
+  install.packages("ggplot2", dependencies = TRUE)
+  library(ggplot2)
+}
+if (!require("dplyr")) {
+  install.packages("dplyr", dependencies = TRUE)
+  library(dplyr)
+}
+if (!require("tidyverse")) {
+  install.packages("tidyverse", dependencies = TRUE)
+  library(tidyverse)
+}
+if (!require("stringr")) {
+  install.packages("stringr", dependencies = TRUE)
+  library(stringr)
+}
+if (!require("vcfR")) {
+  install.packages("vcfR", dependencies = TRUE)
+  library(vcfR)
+}
+
+############################
+## Defining funcions
+#############################
+addCPRA_2_a_matrix <- function( amatrix){
+  amatrix_CP <- cbind( amatrix , paste0( amatrix[,"CHROM"] ,"-", amatrix[,"POS"]) ) ; colnames( amatrix_CP )[dim( amatrix_CP)[2]] <-"CP"
+  amatrix_CPR <- cbind( amatrix_CP ,   paste0( amatrix_CP[,"CP"] ,"-",amatrix_CP[,"REF"] )  ) ; colnames( amatrix_CPR )[dim( amatrix_CPR)[2]] <-"CPR"
+  amatrix_CPRA <- cbind( amatrix_CPR ,   paste0( amatrix_CPR[,"CP"] ,"-",amatrix_CPR[,"REF"],"-",amatrix_CPR[,"ALT"] )  ) ; colnames( amatrix_CPRA )[dim( amatrix_CPRA)[2]] <-"CPRA"
+  return(amatrix_CPRA)
+}
+
+############################
+#### Data given by the user
+#############################
+args <- commandArgs(trailingOnly = TRUE)
+inputvcf <- args[1]
+inputvcf <-   c("/data/Projects/Phosoholipidosis/Exome_Lipidosis/2ndDILpac_Afro_pading/Results/called_variants_in_individual_vcfs_extracted_from_padded_multivcfs/ApplyVSQR_recalibrated_snps_tranche99.9_Recalibrated_INDELS_tranche99.9_NoGaussianLimit.4Gaussians.14KHVCHS_1000G_3Ctrl_MomDad_Daugther2ndDataSet_2ndDILpacient.vcf.gz.KL015.vcf.00-Genotypes_deleted_OnlyPASS.vcf")
+
+result_path <- args[2]
+result_path <-    c(" /data/Projects/Phosoholipidosis/Exome_Lipidosis/2ndDILpac_Afro_pading/Results/called_variants_in_individual_vcfs_extracted_from_padded_multivcfs/testme/")
+
+##############################
+# The script begins
+##############################
+
+dir.create(result_path ,recursive = TRUE) ## create result dir if it doesn't exist
+result_path <- normalizePath(result_path)
+
+myvcf <- read.vcfR( inputvcf) ### read
+vcf_matrix <- myvcf@fix ## Extract all the data but the GT
+vcf_matrix_CPRA <- addCPRA_2_a_matrix(vcf_matrix) ## 
+
+path_2_savefile <- paste0(result_path,"/",basename(inputvcf),"_GTinfoDeleted__CPRAadded.tsv" )
+paste0(result_path,basename(inputvcf))
+paste(result_path)
+paste("a")
+getwd()
+write.table(file=path_2_savefile , vcf_matrix_CPRA, sep="\t",row.names = FALSE )
