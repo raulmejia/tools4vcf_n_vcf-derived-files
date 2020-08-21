@@ -2,6 +2,8 @@
 #################
 ## This script receives two matrix with CPRA columns (matrix derived from VCFs)
 ## As arguments to matrices with CPRA info, if it is possible the first one should contain the annotations
+# the third argument will be the folder for the results
+# And the fourth a "label" for the results file
 ## As a result tree intersected files
 ## don't left blank spaces in the path for the results directory please! 
 ################
