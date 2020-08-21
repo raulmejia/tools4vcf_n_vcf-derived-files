@@ -6,7 +6,6 @@
 ###################################
 #### 0) loading and/or installing required libraries
 ###################################
-
 if (!require("vcfR")) {
   install.packages("vcfR", dependencies = TRUE)
   library(vcfR)
