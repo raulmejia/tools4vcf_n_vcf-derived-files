@@ -1,7 +1,5 @@
 #!/usr/bin/env Rscript
-# Copyright 2012-2013 Trevor L Davis <trevor.l.davis@gmail.com>
-# Copyright 2008 Allen Day
-#  
+#  www.github.com/raulmejia
 #  This file is free software: you may copy, redistribute and/or modify it  
 #  under the terms of the GNU General Public License as published by the  
 #  Free Software Foundation, either version 2 of the License, or (at your  
@@ -25,7 +23,9 @@ parser$add_argument("-v", "--verbose", action="store_true", default=TRUE,
                     help="Print extra output [default]")
 parser$add_argument("-q", "--quietly", action="store_false", 
                     dest="verbose", help="Print little output")
-parser$add_argument("-i", "--input-file", type="character", 
+parser$add_argument("-i", "--inputfile", type="character", 
+                    help="file with your gene list in  Entrez or ensembl ids")
+parser$add_argument("-o", "--outputfile", type="character", 
                     help="file with your gene list in  Entrez or ensembl ids")
 # get command line options, if help option encountered print help and exit,
 # otherwise if options not found on command line then set defaults, 
@@ -33,21 +33,23 @@ args <- parser$parse_args()
 
 # print some progress messages to stderr if "quietly" wasn't requested
 
-myfile <-read.table(file= )
-print(head( ))
-
-
-
-
-if ( args$verbose ) { 
-  write("writing some verbose output to standard error...\n", stderr()) 
+myfile <-read.table(file=args$inputfile)
+#myfile <-read.table(file="/media/rmejia/mountme88/Projects/Phosoholipidosis/Documents/trashmegenes.txt")
+print( head( myfile ))
+myfile[1,1]
+str( myfile )
+list_queries <- list()
+for(k in 1:dim(myfile)[1]){
+  list_queries[k] <- getGene(myfile[k,1], fields="all")
 }
 
-# do some operations based on user input
-if( args$generator == "rnorm") {
-  
-  cat(paste(rnorm(args$count, mean=args$mean, sd=args$sd), collapse="\n"))
-} else {
-  cat(paste(do.call(args$generator, list(args$count)), collapse="\n"))
+summaries <- list()
+for(k in 1:length(list_queries)){ # making  a list that collect summarÿ́́s information'
+  summaries[k] <- list_queries[[k]]$summary
+  names(summaries)[k] <- list_queries[[k]]$symbol
 }
-cat("\n")
+retrivable <- data.frame( names(summaries) , as.character(summaries), stringsAsFactors = FALSE)
+
+
+write.table(file=args$inputfile ,retrivable, row.names = FALSE, sep="\t")
+
