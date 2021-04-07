@@ -40,7 +40,7 @@ inputvcfsfolder_path <- "/media/rmejia/mountme88/LAMP2seq/LAMP2_seq2_outputs/toy
 result_path <- args[2]
 #result_path <- "/home/rmejia/Downloads/toy"
 
-result_path <- "/media/rmejia/mountme88/LAMP2seq/LAMP2_seq2_outputs/toy/CPmatrix.txt"
+result_path <- "/media/rmejia/mountme88/LAMP2seq/LAMP2_seq2_outputs/toy/CPmatrix.tsv"
 
 pattern_2_delete <- "TSVC_variants_IonXpress_"
 
@@ -94,4 +94,48 @@ result_path <- normalizePath(result_path)
 #dir.create(result_path ,recursive = TRUE) ## create result dir if it doesn't exist
 
 write.table(resultmatrix, file=result_path, quote = FALSE, sep = "\t")
+
+heatmap(resultmatrix, scale="none",  margins = c(10,5))
+?heatmap
+
+pdf(file = "/media/rmejia/mountme88/LAMP2seq/LAMP2_seq2_outputs/toy/CPmatrix.pdf", height = 17, width = 14)
+heatmap(resultmatrix, scale="none",  margins = c(10,5), cexRow = 0.6)
+dev.off()
+
+?heatmap
+heatmap(resultmatrix, scale="none", Rowv = NA, margins = c(10,5))
+heatmap(t(resultmatrix) , scale="none", Rowv = NA, margins = c(5,9))
+heatmap(t(resultmatrix) , scale="none", Rowv = NA, Colv =NA, margins = c(5,9))
+
+dim(resultmatrix)
+?heatmap
+
+signature<-c("119577854","119577856","119585109","119585121","119588789","119597785","119599187","119600706","119600707","119600708")
+#signature<-c("119577854","119577856","119585109","119585121","119588789","119597785","119599187","119600706","119600707","119600708"
+             ,"119568477","119568858")
+
+sort(rownamesunion)
+
+rownamesunion[which(rownamesunion %in% paste0("chrX-",signature))]
+
+resultmatrix[which(rownamesunion %in% paste0("chrX-",signature)),]
+
+
+
+sum(resultmatrix["chrX-119577854",])
+sum(resultmatrix["chrX-119577856",])
+sum(resultmatrix["chrX-119585109",])
+sum(resultmatrix["chrX-119585121",])
+
+#sum(resultmatrix["chrX-119588789",])
+
+sum(resultmatrix["chrX-119597785",])
+sum(resultmatrix["chrX-119599187",])
+sum(resultmatrix["chrX-119600706",])
+sum(resultmatrix["chrX-119600707",])
+
+sum(resultmatrix["chrX-119600708",])
+
+
+resultmatrix[,"014-ID-HIPSC_154.vcf.gz"]
 
