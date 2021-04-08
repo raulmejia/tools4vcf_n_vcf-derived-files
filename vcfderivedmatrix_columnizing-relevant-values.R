@@ -30,7 +30,7 @@ if (!require("stringr")) {
 ##########################
 myargs <- commandArgs(trailingOnly = TRUE)
 
-# path_your_vcf_derived_matrix <-"/media/rmejia/mountme88/Projects/Phosoholipidosis/Exome_Lipidosis/VCFs_Backup_to_work/Exact-Positions-match_DIL1_and_DIL2_and_Mom_A-FDad-as-bkgd.vcf"
+# path_your_vcf_derived_matrix <-"/media/rmejia/mountme88/Projects/Phosoholipidosis/Exome_Lipidosis/VCFs_Backup_to_work/vcfs_as_matrices/Exact-Positions-match_DIL1_and_DIL2_and_Mom_A-FDad-as-bkgd.vcf_GTinfoDeleted__CPRAadded.tsv"
 path_your_vcf_derived_matrix <- myargs[1]
 
 # code_path <- "/media/rmejia/mountme88/code/tools4vcf_n_vcf-derived-files/"
@@ -39,8 +39,8 @@ code_path <- myargs[2]
 # Folder_to_save_Results <-"/media/rmejia/mountme88/Projects/Phosoholipidosis/Exome_Lipidosis/VCFs_Backup_to_work/Vcfderived-matrices_columnized-info"
 Folder_to_save_Results <- myargs[3]
 
-#your_label <- "Diagnoses"
-#your_x_label <- myargs[8]
+# your_label <- "Diagnoses"
+# your_x_label <- myargs[8]
 
 #######################
 ### Body
@@ -49,7 +49,7 @@ dir.create(Folder_to_save_Results, recursive = TRUE)
 Folder_to_save_Results <- normalizePath( Folder_to_save_Results)
 
 code_path <- normalizePath( code_path)
-source(paste0(code_path,"/libraries/functions_to_columnize_vcf_derived_tables.R"))
+source( paste0( code_path,"/libraries/functions_to_columnize_vcf_derived_tables.R" ) )
 
 # reading your vcf
 # myvcf <- read.vcfR(path_your_vcf)

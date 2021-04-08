@@ -53,7 +53,11 @@ vcfderived_table_columnizing_nucleotid_change  <- function( some_vcfderived_tabl
 }
 
 vcfderived_table_columnizing_protein_change  <- function( some_vcfderived_table ){
-  Protein_change <- unlist ( lapply( some_vcfderived_table [,"INFO"] , function(x) str_extract(x, "p\\.:\\(p\\.[:alnum:]+\\)" ) ) )
+  Protein_change <- unlist ( lapply( some_vcfderived_table [,"INFO"] , function(x) str_extract(x, "p\\.[:graph:]+\\|" ) ) )
+  Protein_change <- str_replace_all( Protein_change , "\\|","" )
+  Protein_change <- str_replace_all( Protein_change , "p\\.:","" )
+  Protein_change <- str_replace_all( Protein_change , "\\(","" )
+  Protein_change <- str_replace_all( Protein_change , "\\)","" )
   some_vcfderived_table_p_Proteinchange <- 
     cbind(  some_vcfderived_table , Protein_change ) ;  names( some_vcfderived_table_p_Proteinchange )[ dim( some_vcfderived_table_p_Proteinchange )[2] ] <- "Protein_change"
   return( some_vcfderived_table_p_Proteinchange )
